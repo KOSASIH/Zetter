@@ -1,7 +1,9 @@
+const sass = require('node-sass');
+
 module.exports = function (grunt) {
 
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
     bower: {
         install: {
@@ -18,17 +20,17 @@ module.exports = function (grunt) {
         },
     },
 
-    	mochaTest: {
-      		'server-side': {
-        		  options: {
-          			 reporter: 'json',
-          			 clearRequireCache: true,
-          			 colors: true,
+        mochaTest: {
+              'server-side': {
+                  options: {
+                       reporter: 'json',
+                       clearRequireCache: true,
+                       colors: true,
                  quite: true,
                  captureFile: 'mochatest.json'
-        		  },
-        		  src: ['tests/server/*.js']
-      		},
+                  },
+                  src: ['tests/server/*.js']
+              },
           'server-side-spec': {
               options: {
                  reporter: 'spec',
@@ -39,14 +41,14 @@ module.exports = function (grunt) {
               src: ['tests/server/*.js']
           },
           'client-side-spec': {
-        		  options: {
-          			 reporter: 'spec',
-          			 clearRequireCache: true,
-          			 colors: true,
+                  options: {
+                       reporter: 'spec',
+                       clearRequireCache: true,
+                       colors: true,
                  quite: true,
-        		  },
-        		  src: ['tests/client/report.spec.js']
-      		},
+                  },
+                  src: ['tests/client/report.spec.js']
+              },
           'saucelab-fvt': {
                options: {
                  reporter: 'json',
@@ -58,7 +60,7 @@ module.exports = function (grunt) {
               },
               src: ['tests/saucelab/*.js']
           },
-					'fvt': {
+                    'fvt': {
                options: {
                  reporter: 'json',
                  clearRequireCache: true,
@@ -69,53 +71,53 @@ module.exports = function (grunt) {
               },
               src: ['tests/fvt/*.js']
           }
-    	},
+        },
 
-    	clean: {
-    		options: {
-            	force: true,
-            	expand: true
-        	},
-    		coverage: ['tests/coverage'],
+        clean: {
+            options: {
+                force: true,
+                expand: true
+            },
+            coverage: ['tests/coverage'],
         all: ['bower_components'],
         apidocs: ['apidoc']
-    	},
+        },
 
-    	copy: {
-    		resourcesForInstrumented: {
-    			nonull: true,
-    			files: [
-    				{
-    					expand: true,
-    					dest: 'tests/coverage/instrumented',
-    					src: ['routes/*.js', 'dataprovider/*.js']
-    				}
-    			]
-    		}
-    	},
+        copy: {
+            resourcesForInstrumented: {
+                nonull: true,
+                files: [
+                    {
+                        expand: true,
+                        dest: 'tests/coverage/instrumented',
+                        src: ['routes/*.js', 'dataprovider/*.js']
+                    }
+                ]
+            }
+        },
 
-    	instrument: {
-      		files: ['routes/*.js', 'dataprovider/*.js'],
-      		options: {
-        		lazy: false,
-        		basePath: 'tests/coverage/instrumented/'
-      		}
-    	},
+        instrument: {
+              files: ['routes/*.js', 'dataprovider/*.js'],
+              options: {
+                lazy: false,
+                basePath: 'tests/coverage/instrumented/'
+              }
+        },
 
-    	storeCoverage: {
-      		options: {
-        		dir: 'tests/coverage/reports'
-      		}
-    	},
+        storeCoverage: {
+              options: {
+                dir: 'tests/coverage/reports'
+              }
+        },
 
-    	makeReport: {
+        makeReport: {
           src: 'tests/coverage/reports/*.json',
           options: {
             type: 'json-summary',
             dir: 'tests/coverage/reports',
             file: 'coverage-summary.json'
           }
-    	},
+        },
 
       'makeReport-lcov': {
           src: 'tests/coverage/reports/*.json',
@@ -123,10 +125,11 @@ module.exports = function (grunt) {
             type: 'lcov',
             dir: 'tests/coverage/reports'
           }
-    	},
+        },
 
       sass: {
           options: {
+              implementation: sass,
               outputStyle: 'expanded'
           },
           dist: {
@@ -180,7 +183,7 @@ module.exports = function (grunt) {
           }
       },
 
-	  simplemocha: {
+      simplemocha: {
             sauce: {
                 options: {
                     timeout: 60000,
@@ -218,7 +221,7 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['availabletasks']);
     grunt.registerTask('dev-lint', ['jshint:browser', 'jshint:server']);
     grunt.registerTask('dev-setup', ['clean:all', 'bower', 'sass:dist', 'jshint:browser']);
-		grunt.registerTask('fvt-test', ['mochaTest:fvt']);
+    grunt.registerTask('fvt-test', ['mochaTest:fvt']);
     grunt.registerTask('dev-test', ['clean:coverage', 'copy:resourcesForInstrumented', 'instrument', 'mochaTest:server-side-spec']);
     grunt.registerTask('dev-test-cov', ['clean:coverage', 'copy:resourcesForInstrumented', 'instrument', 'mochaTest:server-side', 'storeCoverage', 'makeReport-lcov', 'makeReport']);
     grunt.registerTask('dev-uitest', ['mochaTest:fvt']);
