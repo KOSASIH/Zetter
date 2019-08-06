@@ -4,18 +4,19 @@
   "description": "Weather Report",
   "private": true,
   "dependencies": {
-    "body-parser": "*",
-    "bower": "^1.3.12",
-    "ejs": "*",
-    "express": "*",
-    "request": "^2.65.0"
+    "body-parser": "^1.19.0",
+    "bower": "^1.8.8",
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "request": "^2.88.0"
   },
   "engines": {
-    "node": "4.2.1"
+    "node": "^10.9.0"
   },
   "devDependencies": {
     "chai": "^3.4.0",
-    "grunt": "^1.0.1",
+    "grunt": "^1.0.4",
+    "node-sass": "^4.12.0",
     "grunt-available-tasks": "^0.6.2",
     "grunt-bower-installer": "^0.3.6",
     "grunt-contrib-clean": "^1.0.0",
@@ -23,7 +24,7 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-istanbul": "^0.7.0",
     "grunt-mocha-test": "^0.12.7",
-    "grunt-sass": "^1.1.0",
+    "grunt-sass": "^3.0.2",
     "mocha": "^2.3.3",
     "rewire": "^2.3.4",
     "saucelabs": "^1.0.1",
