@@ -1,76 +1,76 @@
 const sass = require('node-sass');
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-    bower: {
-        install: {
-            options: {
-                targetDir: "static/bower_components",
-                install: true,
-                verbose: false,
-                cleanTargetDir: true,
-                cleanBowerDir: false,
-                bowerOptions: {
-                    directory : "./bower_components"
+        bower: {
+            install: {
+                options: {
+                    targetDir: "static/bower_components",
+                    install: true,
+                    verbose: false,
+                    cleanTargetDir: true,
+                    cleanBowerDir: false,
+                    bowerOptions: {
+                        directory: "./bower_components"
+                    }
                 }
-            }
+            },
         },
-    },
 
         mochaTest: {
-              'server-side': {
-                  options: {
-                       reporter: 'json',
-                       clearRequireCache: true,
-                       colors: true,
-                 quite: true,
-                 captureFile: 'mochatest.json'
-                  },
-                  src: ['tests/server/*.js']
-              },
-          'server-side-spec': {
-              options: {
-                 reporter: 'spec',
-                 clearRequireCache: true,
-                 colors: true,
-                 quite: true
-              },
-              src: ['tests/server/*.js']
-          },
-          'client-side-spec': {
-                  options: {
-                       reporter: 'spec',
-                       clearRequireCache: true,
-                       colors: true,
-                 quite: true,
-                  },
-                  src: ['tests/client/report.spec.js']
-              },
-          'saucelab-fvt': {
-               options: {
-                 reporter: 'json',
-                 clearRequireCache: true,
-                 colors: true,
-                 quite: false,
-                 timeout: 60000,
-                 captureFile: 'saucelabfvt.json'
-              },
-              src: ['tests/saucelab/*.js']
-          },
-                    'fvt': {
-               options: {
-                 reporter: 'json',
-                 clearRequireCache: true,
-                 colors: true,
-                 quite: false,
-                 timeout: 60000,
-                 captureFile: 'mochafvt.json'
-              },
-              src: ['tests/fvt/*.js']
-          }
+            'server-side': {
+                options: {
+                    reporter: 'json',
+                    clearRequireCache: true,
+                    colors: true,
+                    quite: true,
+                    captureFile: 'mochatest.json'
+                },
+                src: ['tests/server/*.js']
+            },
+            'server-side-spec': {
+                options: {
+                    reporter: 'spec',
+                    clearRequireCache: true,
+                    colors: true,
+                    quite: true
+                },
+                src: ['tests/server/*.js']
+            },
+            'client-side-spec': {
+                options: {
+                    reporter: 'spec',
+                    clearRequireCache: true,
+                    colors: true,
+                    quite: true,
+                },
+                src: ['tests/client/report.spec.js']
+            },
+            'saucelab-fvt': {
+                options: {
+                    reporter: 'json',
+                    clearRequireCache: true,
+                    colors: true,
+                    quite: false,
+                    timeout: 60000,
+                    captureFile: 'saucelabfvt.json'
+                },
+                src: ['tests/saucelab/*.js']
+            },
+            'fvt': {
+                options: {
+                    reporter: 'json',
+                    clearRequireCache: true,
+                    colors: true,
+                    quite: false,
+                    timeout: 60000,
+                    captureFile: 'mochafvt.json'
+                },
+                src: ['tests/fvt/*.js']
+            }
         },
 
         clean: {
@@ -79,111 +79,109 @@ module.exports = function (grunt) {
                 expand: true
             },
             coverage: ['tests/coverage'],
-        all: ['bower_components'],
-        apidocs: ['apidoc']
+            all: ['bower_components'],
+            apidocs: ['apidoc']
         },
 
         copy: {
             resourcesForInstrumented: {
                 nonull: true,
-                files: [
-                    {
-                        expand: true,
-                        dest: 'tests/coverage/instrumented',
-                        src: ['routes/*.js', 'dataprovider/*.js']
-                    }
-                ]
+                files: [{
+                    expand: true,
+                    dest: 'tests/coverage/instrumented',
+                    src: ['routes/*.js', 'dataprovider/*.js']
+                }]
             }
         },
 
         instrument: {
-              files: ['routes/*.js', 'dataprovider/*.js'],
-              options: {
+            files: ['routes/*.js', 'dataprovider/*.js'],
+            options: {
                 lazy: false,
                 basePath: 'tests/coverage/instrumented/'
-              }
+            }
         },
 
         storeCoverage: {
-              options: {
+            options: {
                 dir: 'tests/coverage/reports'
-              }
+            }
         },
 
         makeReport: {
-          src: 'tests/coverage/reports/*.json',
-          options: {
-            type: 'json-summary',
-            dir: 'tests/coverage/reports',
-            file: 'coverage-summary.json'
-          }
+            src: 'tests/coverage/reports/*.json',
+            options: {
+                type: 'json-summary',
+                dir: 'tests/coverage/reports',
+                file: 'coverage-summary.json'
+            }
         },
 
-      'makeReport-lcov': {
-          src: 'tests/coverage/reports/*.json',
-          options: {
-            type: 'lcov',
-            dir: 'tests/coverage/reports'
-          }
+        'makeReport-lcov': {
+            src: 'tests/coverage/reports/*.json',
+            options: {
+                type: 'lcov',
+                dir: 'tests/coverage/reports'
+            }
         },
 
-      sass: {
-          options: {
-              implementation: sass,
-              outputStyle: 'expanded'
-          },
-          dist: {
-              files: {
-                'static/built/css/default.css': 'static/sass/default.scss'
-              }
-          }
-      },
-
-      watch: {
-          sass: {
-            files: ['static/sass/*.scss'],
-            tasks: ['sass:dist']
-          },
-      },
-
-      availabletasks: {
-          tasks: {
-              options: {
-                  filter: 'include',
-                  tasks: ['dev-setup'],
-                  groups: {
-                    'Dev build tasks': ['dev-setup']
-                  },
-                  descriptions: {
-                    'dev-setup': 'Install necessary npm modules and project code into the ./dist directory. (Only needed once per branch unless you are changing runtime node or bower component dependencies.',
-                  }
-              }
-          }
-      },
-
-      jshint: {
-          options: {
-            // options here to override JSHint defaults
-            globals: {
-              jQuery: true,
-              console: true,
-              module: true,
-              document: true
+        sass: {
+            options: {
+                implementation: sass,
+                outputStyle: 'expanded'
             },
-          },
-          browser: {
-              files: {
-                src: ['static/**/*.js', '!static/bower_components/**', '!static/js/date.js']
-              }
-          },
-          server: {
-              files: {
-                src: ['routes/**/*.js', 'app.js']
-              }
-          }
-      },
+            dist: {
+                files: {
+                    'static/built/css/default.css': 'static/sass/default.scss'
+                }
+            }
+        },
 
-      simplemocha: {
+        watch: {
+            sass: {
+                files: ['static/sass/*.scss'],
+                tasks: ['sass:dist']
+            },
+        },
+
+        availabletasks: {
+            tasks: {
+                options: {
+                    filter: 'include',
+                    tasks: ['dev-setup'],
+                    groups: {
+                        'Dev build tasks': ['dev-setup']
+                    },
+                    descriptions: {
+                        'dev-setup': 'Install necessary npm modules and project code into the ./dist directory. (Only needed once per branch unless you are changing runtime node or bower component dependencies.',
+                    }
+                }
+            }
+        },
+
+        jshint: {
+            options: {
+                // options here to override JSHint defaults
+                globals: {
+                    jQuery: true,
+                    console: true,
+                    module: true,
+                    document: true
+                },
+            },
+            browser: {
+                files: {
+                    src: ['static/**/*.js', '!static/bower_components/**', '!static/js/date.js']
+                }
+            },
+            server: {
+                files: {
+                    src: ['routes/**/*.js', 'app.js']
+                }
+            }
+        },
+
+        simplemocha: {
             sauce: {
                 options: {
                     timeout: 60000,
